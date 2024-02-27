@@ -19,12 +19,14 @@ export class DashboardComponent implements OnInit {
   stateFilter: string = '';
   districtFilter: string = '';
   clusterFilter: string = '';
-  branchFilter: string = '';
+  branchName: string = '';
   branchIdFilter: string = '';
   productFilter: string = '';
   filteredDepositData: any[] = [];
   filteredAdvanceData: any[] = [];
   currentTab: string = 'dailySnapshot';
+  branchData: any[] = [];
+  branchKeys: string[] = [];
 
   constructor(
     private router: Router,
@@ -34,6 +36,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.updateDate();
+    this.fetchBranchData();
 
     // Fetch total deposit and total advance amounts
     this.authService.getTotalDeposit().subscribe(
@@ -76,6 +79,10 @@ export class DashboardComponent implements OnInit {
       }
     );
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1b8e934329646c6feb92dc64123d0c1e1e59d06f
     // Update the date every day at midnight
     setInterval(() => {
       this.updateDate();
@@ -110,12 +117,12 @@ export class DashboardComponent implements OnInit {
 
   applyFilters(): void {
     const filters = {
-      branch: this.branchFilter,
-      branchId: this.branchIdFilter,
-      product: this.productFilter
+      branchName: this.branchName,
+      // branchId: this.branchIdFilter,
+      // product: this.productFilter
     };
 
-    this.http.post('/filteredAdvanceData', filters)
+    this.http.post('/filteredAdvanceDataByBranchName', filters)
       .subscribe(
         (data: any) => {
           this.filteredAdvanceData = data;
@@ -150,5 +157,19 @@ export class DashboardComponent implements OnInit {
 
   openTab(event: Event, tabName: string) {
     this.currentTab = tabName;
+  }
+
+
+
+  fetchBranchData() {
+    // Mocking branch data
+    this.branchData = [
+      // Response data here
+    ];
+
+    // Extracting keys dynamically
+    if (this.branchData.length > 0) {
+      this.branchKeys = Object.keys(this.branchData[0]);
+    }
   }
 }
