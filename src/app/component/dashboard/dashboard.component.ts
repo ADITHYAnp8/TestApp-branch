@@ -54,6 +54,28 @@ export class DashboardComponent implements OnInit {
       }
     );
 
+    this.authService.getTotalDeposit().subscribe(
+      (data: { deposit_total: number }[]) => {
+        this.totalDepositAmount = data[0].deposit_total;
+    
+        // After fetching total deposit, fetch total advance
+        this.authService.getTotalAdvance().subscribe(
+          (advanceData: { advance_total: number }[]) => {
+            this.totalAdvanceAmount = advanceData[0].advance_total;
+    
+            // Calculate totalBusinessAmount
+            this.totalBusinessAmount = this.totalDepositAmount + this.totalAdvanceAmount;
+          },
+          (advanceError: any) => {
+            console.error('Error fetching total advance:', advanceError);
+          }
+        );
+      },
+      (error: any) => {
+        console.error('Error fetching total deposit:', error);
+      }
+    );
+
     // Update the date every day at midnight
     setInterval(() => {
       this.updateDate();
